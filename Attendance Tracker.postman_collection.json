@@ -1,0 +1,568 @@
+{
+	"info": {
+		"_postman_id": "bf60b0b8-a00c-479f-9cca-78d3dff06118",
+		"name": "Attendance Tracker",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33146027"
+	},
+	"item": [
+		{
+			"name": "globalAdmin",
+			"item": [
+				{
+					"name": "auth",
+					"item": [
+						{
+							"name": "signup",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"username\",\r\n    \"password\": \"password\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/auth/globaladmin/signup",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"auth",
+										"globaladmin",
+										"signup"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "login",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"admin\",\r\n    \"password\": \"admin\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/auth/globaladmin/login",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"auth",
+										"globaladmin",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "logout",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/auth/globaladmin/logout",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"auth",
+										"globaladmin",
+										"logout"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "vertical lead operations",
+					"item": [
+						{
+							"name": "create vertical heads",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Adhish Krishna S\",\r\n    \"roll_no\":\"23N206\",\r\n    \"year\": 3,\r\n    \"department\": \"CSE AI ML\",\r\n    \"vertical\": \"Tech\",\r\n    \"password\": \"123456\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/auth/verticalleads/signup",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"auth",
+										"verticalleads",
+										"signup"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get vertical leads",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/globaladmin/verticalleads",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"globaladmin",
+										"verticalleads"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get vertical lead",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/globaladmin/verticalleads/23n206",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"globaladmin",
+										"verticalleads",
+										"23n206"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update vertical lead",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Updated Name\",\r\n    \"rollno\": \"23n20928\",      \r\n    \"year\": 4,                     \r\n    \"department\": \"New Department\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/globaladmin/verticalleads/23n206",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"globaladmin",
+										"verticalleads",
+										"23n206"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete vertical lead",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Updated Name\",\r\n    \"rollno\": \"23n228\",      \r\n    \"year\": 4,                     \r\n    \"department\": \"New Department\"\r\n}"
+								},
+								"url": {
+									"raw": "{{baseURL}}/globaladmin/verticalleads/23n228",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"globaladmin",
+										"verticalleads",
+										"23n228"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "verticalLeads",
+			"item": [
+				{
+					"name": "auth",
+					"item": [
+						{
+							"name": "login",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"roll_no\": \"23n206\",\r\n    \"password\":\"123456\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/auth/verticalleads/login",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"auth",
+										"verticalleads",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "logout",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/auth/verticalleads/logout",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"auth",
+										"verticalleads",
+										"logout"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "member operations",
+					"item": [
+						{
+							"name": "add member",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Mohana Kumar P\",\r\n    \"roll_no\": \"23N228\",\r\n    \"year\": 3,\r\n    \"department\":\"CSE AI ML\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/verticalleads/members",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"verticalleads",
+										"members"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get members",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/verticalleads/members",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"verticalleads",
+										"members"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get member by rollno",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/verticalleads/members/23N228",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"verticalleads",
+										"members",
+										"23N228"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update member",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Mohan\",\r\n    \"year\": 3,\r\n    \"department\":\"CSE (AI ML)\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/verticalleads/members/23N228",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"verticalleads",
+										"members",
+										"23N228"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete member",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/verticalleads/members/23N228",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"verticalleads",
+										"members",
+										"23N228"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "meeting operations",
+					"item": [
+						{
+							"name": "create meeting",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"meeting_name\": \"Intrams Discussion\",\r\n    \"date\":\"09-14-2025\",\r\n    \"m_o_m\":\"Assigned works tonew recruits for intrams\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/verticalleads/meetings",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"verticalleads",
+										"meetings"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get meetings",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/verticalleads/meetings",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"verticalleads",
+										"meetings"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get meeting",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/verticalleads/meetings/{{meetingId}}",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"verticalleads",
+										"meetings",
+										"{{meetingId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update meeting",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"meeting_name\": \"Discussion\",\r\n    \"date\":\"09-16-2025\",\r\n    \"m_o_m\": \"Sample test\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/verticalleads/meetings/{{meetingId}}",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"verticalleads",
+										"meetings",
+										"{{meetingId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete meeting",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/verticalleads/meetings/{{meetingId}}",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"verticalleads",
+										"meetings",
+										"{{meetingId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Members with Attendance Status",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/verticalleads/meetings/{{meetingId}}/members-attendance",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"verticalleads",
+										"meetings",
+										"{{meetingId}}",
+										"members-attendance"
+									]
+								},
+								"description": "Get all members in the vertical with their attendance status for a specific meeting (optimized for frontend rendering)"
+							},
+							"response": []
+						},
+						{
+							"name": "Update Attendance Status",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"memberAttendance\": {\r\n        \"23N206\": true,\r\n        \"23N228\": true\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/verticalleads/meetings/{{meetingId}}/attendance",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"verticalleads",
+										"meetings",
+										"{{meetingId}}",
+										"attendance"
+									]
+								},
+								"description": "Update attendance using frontend-friendly format where keys are roll numbers and values are attendance status booleans"
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "baseURL",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "meetingId",
+			"value": "",
+			"type": "default"
+		}
+	]
+}

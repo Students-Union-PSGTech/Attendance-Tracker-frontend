@@ -55,7 +55,29 @@ const GlobalAdminDashboard: React.FC = () => {
 
   useEffect(() => {
     fetchLeadsAndAnalytics();
+    fetchAttendanceAnalytics();
   }, []);
+
+  // Fetch analytics from attendance summary
+  const fetchAttendanceAnalytics = async () => {
+    try {
+      const data = await globalAdminAPI.getAllVerticalsAttendanceSummary();
+      const attendanceSummary = data.attendance_summary || [];
+      // Calculate total members (unique roll_no), total verticals, avg attendance
+      const uniqueMembers = new Set(attendanceSummary.map((m: any) => m.roll_no));
+      const uniqueVerticals = new Set(attendanceSummary.map((m: any) => m.vertical));
+      const avgAttendance = attendanceSummary.length > 0
+        ? (attendanceSummary.reduce((acc: number, m: any) => acc + (typeof m.percentage === 'number' ? m.percentage : 0), 0) / attendanceSummary.length)
+        : 0;
+      setAnalytics({
+        totalVerticals: uniqueVerticals.size,
+        totalMembers: uniqueMembers.size,
+  avgAttendance: avgAttendance ? Number(avgAttendance.toFixed(1)) : 0,
+      });
+    } catch (err) {
+      // fallback: do not update analytics
+    }
+  };
 
   const fetchLeadsAndAnalytics = async () => {
     setLoading(true);
@@ -386,12 +408,7 @@ const GlobalAdminDashboard: React.FC = () => {
             <div className="flex items-center space-x-4">
               <h2 className="text-xl font-bold text-gray-900">Vertical Heads</h2>
               {/* Debug button - remove in production */}
-              <button
-                onClick={fetchLeadsAndAnalytics}
-                className="inline-flex items-center px-3 py-1 border border-gray-300 rounded-md text-xs font-medium text-gray-700 bg-gray-100 hover:bg-gray-200"
-              >
-                🔄 Refresh Data
-              </button>
+
             </div>
             <button
               onClick={() => setShowCreateForm(true)}
@@ -432,9 +449,7 @@ const GlobalAdminDashboard: React.FC = () => {
               <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-50">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      <input type="checkbox" className="rounded border-gray-300" disabled />
-                    </th>
+                    {/* Removed checkbox column header */}
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Roll No</th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
@@ -447,9 +462,7 @@ const GlobalAdminDashboard: React.FC = () => {
                 <tbody className="bg-white divide-y divide-gray-200">
                   {verticalLeads.map((lead: any, index) => (
                     <tr key={lead.roll_no || index} className="hover:bg-gray-50">
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <input type="checkbox" className="rounded border-gray-300" />
-                      </td>
+                      {/* Removed checkbox cell */}
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                         {lead.name || 'N/A'}
                       </td>
@@ -506,6 +519,16 @@ const GlobalAdminDashboard: React.FC = () => {
         {showCreateForm && (
           <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
             <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+              <button
+                onClick={() => { setShowCreateForm(false); setEditingLead(null); }}
+                className="absolute top-2 right-2 text-gray-400 hover:text-gray-700 focus:outline-none"
+                aria-label="Close"
+                type="button"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
               <div className="mt-3">
                 <h3 className="text-lg font-medium text-gray-900 text-center mb-4">
                   {editingLead ? 'Edit Vertical Head' : 'Create New Vertical Head'}

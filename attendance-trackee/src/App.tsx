@@ -8,6 +8,7 @@ import AddMembersPage from './pages/AddMembersPage';
 import GlobalAdminDashboard from './pages/GlobalAdminDashboard';
 import MeetingAttendancePage from './pages/MeetingAttendancePage';
 import UnauthorizedPage from './pages/UnauthorizedPage';
+import VerticalHeadAttendance from './pages/VerticalHeadAttendance';
 import './App.css';
 
 // Home redirect component
@@ -59,6 +60,14 @@ function App() {
                   <MeetingAttendancePage />
                 </ProtectedRoute>
               } 
+            />
+            <Route
+              path="/vertical-head/attendance"
+              element={
+                <ProtectedRoute allowedRoles={['vertical_head']}>
+                  <VerticalHeadAttendance />
+                </ProtectedRoute>
+              }   
             />
             
             {/* Protected Routes - Global Admin */}

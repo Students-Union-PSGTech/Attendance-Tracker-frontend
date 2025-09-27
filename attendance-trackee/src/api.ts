@@ -74,6 +74,12 @@ export const globalAdminAPI = {
   deleteVerticalLead: async (roll_no: string) => {
     const response = await api.delete(`/globaladmin/verticalleads/${roll_no}`);
     return response.data;
+  },
+
+  // Get attendance summary for all verticals (Global Admin only)
+  getAllVerticalsAttendanceSummary: async () => {
+    const response = await api.get('/globaladmin/attendance-summary/all');
+    return response.data;
   }
 };
 

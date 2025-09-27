@@ -20,14 +20,7 @@ interface CreateLeadForm {
   password: string;
 }
 
-interface AttendanceSummary {
-  roll_no: string;
-  name: string;
-  vertical: string;
-  attended: number;
-  total_meetings: number;
-  percentage: number;
-}
+
 
 const GlobalAdminDashboard: React.FC = () => {
   const { user, logout } = useAuth();
@@ -49,9 +42,8 @@ const GlobalAdminDashboard: React.FC = () => {
   const [error, setError] = useState<string>('');
   const [success, setSuccess] = useState<string>('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showAttendance, setShowAttendance] = useState(false);
-  const [attendanceData, setAttendanceData] = useState<AttendanceSummary[]>([]);
-  const [attendanceLoading, setAttendanceLoading] = useState(false);
+  // Removed unused showAttendance state
+  // Removed unused attendanceData and attendanceLoading state
 
   useEffect(() => {
     fetchLeadsAndAnalytics();
@@ -134,18 +126,7 @@ const GlobalAdminDashboard: React.FC = () => {
     }
   };
 
-  const fetchAttendanceSummary = async () => {
-    setAttendanceLoading(true);
-    try {
-      const data = await globalAdminAPI.getAllVerticalsAttendanceSummary();
-      setAttendanceData(data.attendance_summary || []);
-    } catch (err) {
-      console.error('Error fetching attendance summary:', err);
-      setError('Failed to load attendance data');
-    } finally {
-      setAttendanceLoading(false);
-    }
-  };
+
 
   const handleCreateLead = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -233,10 +214,7 @@ const GlobalAdminDashboard: React.FC = () => {
     setSuccess('');
   };
 
-  const handleShowAttendance = () => {
-    setShowAttendance(true);
-    fetchAttendanceSummary();
-  };
+
 
   const handleLogout = async () => {
     try {
@@ -332,72 +310,7 @@ const GlobalAdminDashboard: React.FC = () => {
           </div>
         </div>
 
-        {/* Attendance Summary Modal */}
-        {showAttendance && (
-          <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
-            <div className="relative top-10 mx-auto p-5 border w-4/5 max-w-6xl shadow-lg rounded-md bg-white">
-              <div className="flex justify-between items-center mb-6">
-                <h3 className="text-lg font-medium text-gray-900">All Verticals Attendance Summary</h3>
-                <button
-                  onClick={() => setShowAttendance(false)}
-                  className="text-gray-400 hover:text-gray-600"
-                >
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
-              </div>
-              
-              {attendanceLoading ? (
-                <div className="flex justify-center py-8">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-                </div>
-              ) : (
-                <div className="overflow-x-auto">
-                  <table className="min-w-full divide-y divide-gray-200">
-                    <thead className="bg-gray-50">
-                      <tr>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Roll No</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Vertical</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Attended</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Percentage</th>
-                      </tr>
-                    </thead>
-                    <tbody className="bg-white divide-y divide-gray-200">
-                      {attendanceData.map((member, index) => (
-                        <tr key={index} className="hover:bg-gray-50">
-                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{member.name}</td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{member.roll_no}</td>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
-                              {member.vertical}
-                            </span>
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                            {member.attended}
-                            <span className="ml-2 text-xs text-gray-500">({member.attended}/{member.total_meetings})</span>
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{member.total_meetings}</td>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                              member.percentage >= 80 ? 'bg-green-100 text-green-800' :
-                              member.percentage >= 60 ? 'bg-yellow-100 text-yellow-800' :
-                              'bg-red-100 text-red-800'
-                            }`}>
-                              {member.percentage.toFixed(1)}%
-                            </span>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              )}
-            </div>
-          </div>
-        )}
+
 
         {/* Vertical Leads Management Section */}
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-8">

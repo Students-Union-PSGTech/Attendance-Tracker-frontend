@@ -4,7 +4,10 @@
     {
       "src": "attendance-trackee/package.json",
       "use": "@vercel/static-build",
-      "config": { "distDir": "attendance-trackee/dist" }
+      "config": {
+        "distDir": "attendance-trackee/dist",
+        "buildCommand": "npm run vercel-build"
+      }
     }
   ],
   "routes": [

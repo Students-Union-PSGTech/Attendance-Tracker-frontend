@@ -11,6 +11,7 @@ const MeetingAttendancePage: React.FC = () => {
   
   const [meeting, setMeeting] = useState<Meeting | null>(null);
   const [members, setMembers] = useState<Member[]>([]);
+  const [searchTerm, setSearchTerm] = useState('');
   const [attendance, setAttendance] = useState<AttendanceData>({});
   const [originalAttendance, setOriginalAttendance] = useState<AttendanceData>({});
   const [loading, setLoading] = useState(true);
@@ -190,6 +191,15 @@ const MeetingAttendancePage: React.FC = () => {
     );
   }
 
+  // Filter members by roll number or name
+  const filteredMembers = members.filter((member) => {
+    const term = searchTerm.trim().toLowerCase();
+    return (
+      member.roll_no.toLowerCase().includes(term) ||
+      member.name.toLowerCase().includes(term)
+    );
+  });
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -256,22 +266,36 @@ const MeetingAttendancePage: React.FC = () => {
           </div>
         )}
 
-        {/* Members List */}
+        {/* Members List with Search */}
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-          <div className="px-6 py-4 border-b border-gray-200">
-            <h3 className="text-lg font-medium text-gray-900">Mark Attendance</h3>
-            <p className="text-sm text-gray-600 mt-1">
-              Check the boxes to mark members as present
-            </p>
+          <div className="px-6 py-4 border-b border-gray-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div>
+              <h3 className="text-lg font-medium text-gray-900">Mark Attendance</h3>
+              <p className="text-sm text-gray-600 mt-1">
+                Check the boxes to mark members as present
+              </p>
+            </div>
+            <div className="w-full sm:w-64">
+              <input
+                type="text"
+                value={searchTerm}
+                onChange={e => setSearchTerm(e.target.value)}
+                placeholder="Search by roll no or name..."
+                className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 text-sm"
+              />
+            </div>
           </div>
-          
           {members.length === 0 ? (
             <div className="text-center py-12">
               <p className="text-gray-500">No members found for this vertical.</p>
             </div>
+          ) : filteredMembers.length === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-gray-500">No members match your search.</p>
+            </div>
           ) : (
             <div className="divide-y divide-gray-200">
-              {members.map((member) => (
+              {filteredMembers.map((member) => (
                 <div key={member.roll_no} className="px-4 sm:px-6 py-4 flex items-center justify-between hover:bg-gray-50">
                   <div className="flex items-center">
                     <input

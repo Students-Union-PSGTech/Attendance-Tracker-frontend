@@ -1,5 +1,6 @@
 
 import React from 'react';
+import * as XLSX from 'xlsx';
 import AddMembers from '../components/AddMembers';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -14,8 +15,32 @@ const AddMembersPage: React.FC = () => {
       await logout();
       navigate('/login');
     } catch (error) {
-      // handle error
+      console.error('Logout error:', error);
     }
+  };
+
+  const handleDownloadTemplate = () => {
+  const headers = ['Name', 'Roll No', 'Year', 'Department'];
+
+    const worksheet = XLSX.utils.aoa_to_sheet([headers]);
+    worksheet['!cols'] = headers.map(() => ({ wch: 24 }));
+
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Members Template');
+
+    const workbookBinary = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+    const blob = new Blob([workbookBinary], {
+      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    });
+
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'members-upload-template.xlsx';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
   };
 
   return (
@@ -50,8 +75,8 @@ const AddMembersPage: React.FC = () => {
         </div>
       </header>
       <main className="flex flex-col items-center justify-center p-4">
-        <div className="w-full max-w-2xl">
-          <AddMembers onSuccess={() => {}} />
+        <div className="w-full max-w-5xl mx-auto">
+          <AddMembers onSuccess={() => {}} onDownloadTemplate={handleDownloadTemplate} />
         </div>
       </main>
     </div>

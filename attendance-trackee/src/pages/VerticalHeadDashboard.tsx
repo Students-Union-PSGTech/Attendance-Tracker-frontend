@@ -174,7 +174,7 @@ const VerticalHeadDashboard: React.FC = () => {
             {meetings.map((meeting) => (
               <div
                 key={meeting._id}
-                className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200"
+                className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 transition-all duration-300 transform hover:shadow-xl hover:-translate-y-1 hover:border-primary-100"
               >
                 <div className="flex items-start justify-between">
                   <div className="flex-1 min-w-0">
@@ -194,7 +194,7 @@ const VerticalHeadDashboard: React.FC = () => {
                 <div className="mt-4 flex justify-center sm:justify-end">
                   <button
                     onClick={() => handleViewMeeting(meeting._id)}
-                    className="w-full sm:w-auto inline-flex items-center justify-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors duration-200 min-h-[40px]"
+                    className="w-full sm:w-auto inline-flex items-center justify-center px-3 py-2 border border-transparent shadow-sm text-sm leading-4 font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-all duration-200 min-h-[40px]"
                   >
                     View / Manage
                     <svg className="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

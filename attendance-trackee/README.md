@@ -1,140 +1,260 @@
-# Attendance Tracker Frontend
+# 🚀 Attendance Tracker - Development Guide
 
-A React + TypeScript application for managing meeting attendance in an organization with vertical heads and global admins.
+This is the main React application for the Attendance Tracker system. This README focuses on development setup and technical details.
 
-## Features
-
-### Authentication
-- **Role-based login system** supporting Vertical Heads and Global Admins
-- **JWT token-based authentication** with automatic session management
-- **Protected routes** with role-based access control
-
-### Vertical Head Dashboard
-- **Meeting Management**: View all past meetings sorted by date (most recent first)
-- **Create New Meetings**: Modal form to create meetings with name, date/time, and description
-- **Quick Access**: Direct navigation to attendance management for each meeting
-
-### Meeting Attendance Management
-- **Member List**: Display all members in the vertical with checkboxes
-- **Real-time Updates**: Check/uncheck attendance without immediate API calls
-- **Bulk Save**: Save all attendance changes in a single API request
-- **Unsaved Changes Protection**: Browser prompt when navigating away with unsaved changes
-- **Attendance Summary**: Visual count of present vs total members
-
-### Global Admin Dashboard
-- **Placeholder**: Ready for future features like managing vertical leads and system-wide analytics
-
-## Technology Stack
-
-- **Frontend**: React 18 + TypeScript
-- **Routing**: React Router DOM v6
-- **Styling**: Tailwind CSS
-- **State Management**: React Context API
-- **HTTP Client**: Axios
-- **Build Tool**: Vite
-
-## Getting Started
+## 🔧 Development Setup
 
 ### Prerequisites
-- Node.js 16+
+- Node.js 16+ (recommended: 18+)
 - npm or yarn
+- Backend API server running
 
-### Installation
+### Quick Start
 
-1. Clone the repository:
-   ```bash
-   git clone <repository-url>
-   cd attendance-trackee
-   ```
-
-2. Install dependencies:
+1. **Install dependencies**
    ```bash
    npm install
    ```
 
-3. Create environment file:
+2. **Environment configuration**
    ```bash
-   cp .env.example .env
+   # Create .env file
+   VITE_BACKEND_URL=http://localhost:3000
    ```
 
-4. Update the backend URL in `.env`:
-   ```
-   VITE_BACKEND_URL=http://localhost:3000/api
-   ```
-
-5. Start the development server:
+3. **Start development server**
    ```bash
    npm run dev
-   ``` + Vite
+   ```
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+4. **Open application**
+   - Navigate to `http://localhost:5173`
+   - Default login: `admin` / `admin` (Global Admin)
 
-Currently, two official plugins are available:
+## 🏗️ Architecture Overview
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Component Structure
+```
+src/
+├── api.ts              # Axios configuration & API calls
+├── types.ts            # TypeScript interfaces
+├── components/         # Reusable UI components
+├── contexts/           # React Context providers
+├── pages/             # Route-level components
+└── assets/            # Static files
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Key Features
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+#### Authentication System
+- **JWT-based authentication** with automatic token refresh
+- **Role-based access control** (Global Admin, Vertical Head)
+- **Protected routes** with context-aware navigation
+- **Secure session management** with automatic logout
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+#### Global Admin Features
+- Create and manage vertical head accounts
+- View system-wide attendance analytics
+- Export attendance data to Excel format
+- Access comprehensive user management
+
+#### Vertical Head Features
+- Create and manage meetings for their vertical
+- Add team members to their vertical
+- Mark attendance with real-time updates
+- View meeting history and statistics
+- Bulk attendance operations
+
+## 🛠️ Development Scripts
+
+```bash
+# Development with hot reload
+npm run dev
+
+# Type checking
+npm run type-check
+
+# Linting
+npm run lint
+
+# Production build
+npm run build
+
+# Preview production build
+npm run preview
 ```
+
+## 🔧 Configuration
+
+### Environment Variables
+```bash
+# Backend API URL (required)
+VITE_BACKEND_URL=http://localhost:3000
+
+# Debug mode (optional)
+VITE_DEBUG=false
+```
+
+### Build Configuration
+- **Vite**: Modern build tool with Rolldown bundler
+- **TypeScript**: Strict type checking enabled
+- **ESLint**: Code quality and consistency
+- **Tailwind CSS**: Utility-first styling
+- **PostCSS**: CSS processing pipeline
+
+## 🎨 Styling Guidelines
+
+### Tailwind CSS Classes
+```tsx
+// Consistent spacing and colors
+className="p-4 bg-white rounded-lg shadow-md"
+
+// Responsive design
+className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+
+// Interactive states
+className="hover:bg-blue-50 focus:ring-2 focus:ring-blue-500"
+```
+
+### Material-UI Integration
+```tsx
+import { Button, TextField, Dialog } from '@mui/material';
+
+// Consistent theme usage
+<Button variant="contained" color="primary">
+  Create Meeting
+</Button>
+```
+
+## 📡 API Integration
+
+### Authentication Endpoints
+```typescript
+// Login
+POST /auth/globaladmin/login
+POST /auth/verticalhead/login
+
+// Logout
+POST /auth/globaladmin/logout
+POST /auth/verticalhead/logout
+```
+
+### Core Operations
+```typescript
+// Meeting management
+GET /verticalhead/meetings
+POST /verticalhead/meetings
+PUT /verticalhead/attendance/:meetingId
+
+// User management
+POST /globaladmin/verticalleads/create
+GET /globaladmin/verticalleads
+POST /verticalhead/members/add
+```
+
+### Error Handling
+```typescript
+// Global error interceptor
+api.interceptors.response.use(
+  response => response,
+  error => {
+    if (error.response?.status === 401) {
+      // Handle authentication errors
+    }
+    return Promise.reject(error);
+  }
+);
+```
+
+## 🧪 Testing
+
+### Component Testing
+```bash
+# Add testing dependencies
+npm install --save-dev @testing-library/react @testing-library/jest-dom vitest
+```
+
+### Type Safety
+```typescript
+// Strict TypeScript configuration
+interface Meeting {
+  id: string;
+  name: string;
+  date: string;
+  attendance: AttendanceRecord[];
+}
+```
+
+## 🚀 Deployment
+
+### Production Build
+```bash
+npm run build
+# Outputs to dist/ directory
+```
+
+### Vercel Deployment
+```bash
+# Install Vercel CLI
+npm i -g vercel
+
+# Deploy
+vercel --prod
+```
+
+## 🐛 Debugging
+
+### Development Tools
+- **React DevTools**: Component inspection
+- **Redux DevTools**: State management (if added)
+- **Network Tab**: API call monitoring
+- **Console Logging**: Strategic debug points
+
+### Common Issues
+1. **CORS errors**: Check backend CORS configuration
+2. **Authentication failures**: Verify JWT token handling
+3. **Build errors**: Check TypeScript strict mode settings
+
+## 🔄 State Management
+
+### Context API Usage
+```typescript
+// AuthContext provides global authentication state
+const { user, isAuthenticated, login, logout } = useAuth();
+
+// Protected route implementation
+<ProtectedRoute allowedRoles={['vertical_head']}>
+  <VerticalHeadDashboard />
+</ProtectedRoute>
+```
+
+## 📱 Responsive Design
+
+### Breakpoint Strategy
+```css
+/* Mobile-first approach */
+.container {
+  @apply w-full px-4;
+}
+
+/* Tablet and up */
+@screen md {
+  .container {
+    @apply px-6 max-w-4xl mx-auto;
+  }
+}
+
+/* Desktop */
+@screen lg {
+  .container {
+    @apply px-8 max-w-6xl;
+  }
+}
+```
+
+## 🔗 Related Documentation
+
+- [Backend API Documentation](../backend/README.md)
+- [Deployment Guide](./docs/deployment.md)
+- [Component Library](./docs/components.md)
+- [Contributing Guidelines](./CONTRIBUTING.md)

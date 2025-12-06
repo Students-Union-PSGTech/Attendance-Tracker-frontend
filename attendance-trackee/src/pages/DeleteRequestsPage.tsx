@@ -41,7 +41,15 @@ const DeleteRequestsPage: React.FC = () => {
       setError('');
       const status = statusFilter === 'all' ? undefined : statusFilter;
       const response = await globalAdminAPI.getAllDeleteRequests(status);
-      setRequests(response.requests || []);
+      console.log('Delete requests response:', response);
+      const requestsData = response.requests || [];
+      // Transform data to ensure vertical and requested_by are set correctly
+      const transformedRequests = requestsData.map((req: any) => ({
+        ...req,
+        vertical: req.vertical || req.member_vertical || '',
+        requested_by: req.requested_by || req.vertical_head_name || req.user_name || ''
+      }));
+      setRequests(transformedRequests);
     } catch (err: any) {
       setError(err?.error || 'Failed to fetch delete requests');
       setRequests([]);

@@ -1,7 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import toast from 'react-hot-toast';
 import { globalAdminAPI, globalAdminOperationsAPI } from '../api';
 import { Paper, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
 import type { Theme } from '@mui/material/styles';
@@ -68,27 +67,9 @@ const GlobalAdminAllAttendancePage: React.FC = () => {
       link.click();
       document.body.removeChild(link);
       window.URL.revokeObjectURL(url);
-      
-      // Show success toast
-      toast.success('Attendance report downloaded successfully!');
-    } catch (err: any) {
+    } catch (err) {
       console.error('Error downloading CSV:', err);
-      
-      // Handle blob error response - axios returns error as blob when responseType is 'blob'
-      if (err instanceof Blob) {
-        try {
-          const text = await err.text();
-          const errorData = JSON.parse(text);
-          const errorMessage = errorData.error || 'Failed to download attendance report';
-          toast.error(errorMessage);
-        } catch {
-          toast.error('Failed to download attendance report');
-        }
-      } else {
-        // Handle regular error objects from the interceptor
-        const errorMessage = err?.error || err?.message || 'Failed to download attendance report';
-        toast.error(errorMessage);
-      }
+      alert('Failed to download attendance report');
     } finally {
       setDownloadingCsv(false);
     }

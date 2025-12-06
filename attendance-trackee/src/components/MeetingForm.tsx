@@ -25,6 +25,7 @@ const MeetingForm: React.FC<MeetingFormProps> = ({ isOpen, onClose, onSuccess, m
     meeting_name: '',
     date: '',
     m_o_m: '',
+    creator_name: '',
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string>('');
@@ -44,6 +45,7 @@ const MeetingForm: React.FC<MeetingFormProps> = ({ isOpen, onClose, onSuccess, m
         meeting_name: '',
         date: '',
         m_o_m: '',
+        creator_name: '',
       });
     }
   }, [meeting, isOpen]);
@@ -82,12 +84,20 @@ const MeetingForm: React.FC<MeetingFormProps> = ({ isOpen, onClose, onSuccess, m
       setLoading(true);
       let response;
       
+      // Transform form data to match API requirements
+      const apiData = {
+        meeting_name: formData.meeting_name,
+        date: formData.date,
+        m_o_m: formData.m_o_m,
+        created_by_name: formData.creator_name
+      };
+      
       if (meeting) {
         // Update existing meeting
-        response = await (api ?? verticalLeadAPI).updateMeeting(meeting._id, formData);
+        response = await (api ?? verticalLeadAPI).updateMeeting(meeting._id, apiData);
       } else {
         // Create new meeting
-        response = await (api ?? verticalLeadAPI).createMeeting(formData);
+        response = await (api ?? verticalLeadAPI).createMeeting(apiData);
       }
 
       if (response.message) {
@@ -95,6 +105,7 @@ const MeetingForm: React.FC<MeetingFormProps> = ({ isOpen, onClose, onSuccess, m
           meeting_name: '',
           date: '',
           m_o_m: '',
+          creator_name: '',
         });
         onSuccess();
         onClose();
@@ -155,6 +166,22 @@ const MeetingForm: React.FC<MeetingFormProps> = ({ isOpen, onClose, onSuccess, m
                 className="w-full px-3 py-2 border border-gray-300 dark:border-slate-700 rounded-md shadow-sm bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
                 placeholder="Enter meeting name"
                 required
+                disabled={loading}
+              />
+            </div>
+
+            <div>
+              <label htmlFor="creator_name" className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
+                Creator Name (Your Name)
+              </label>
+              <input
+                type="text"
+                id="creator_name"
+                name="creator_name"
+                value={formData.creator_name}
+                onChange={handleInputChange}
+                className="w-full px-3 py-2 border border-gray-300 dark:border-slate-700 rounded-md shadow-sm bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+                placeholder="Enter your name"
                 disabled={loading}
               />
             </div>

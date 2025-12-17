@@ -12,7 +12,7 @@ interface SidebarProps {
   isOpen: boolean;
   onToggle: (isOpen: boolean) => void;
   menuItems: MenuItem[];
-  user: { name?: string; username?: string; roll_no?: string } | null;
+  user?: { name?: string; username?: string; roll_no?: string } | null;
   onLogout: () => void;
   title?: string;
 }
@@ -21,7 +21,6 @@ const Sidebar: React.FC<SidebarProps> = ({
   isOpen,
   onToggle,
   menuItems,
-  user,
   onLogout,
   title = 'Menu'
 }) => {

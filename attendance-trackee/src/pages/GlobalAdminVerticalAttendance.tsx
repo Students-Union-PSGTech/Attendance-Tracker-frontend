@@ -270,7 +270,7 @@ const GlobalAdminVerticalAttendance: React.FC = () => {
                           {formatDate(meeting.date)}
                         </p>
                         <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
-                          Created by: {meeting.created_by === 'OB' ? 'OB' : `${meeting.created_by_name || 'Unknown'}${meeting.created_by_roll_no ? ` (${meeting.created_by_roll_no})` : ''}`}
+                          Created by: {meeting.created_by === 'OB' ? 'Office Bearers' : `${meeting.created_by_name || ''} (${meeting.created_by_roll_no || ''})`}
                         </p>
                       </div>
                     </div>

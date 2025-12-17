@@ -20,6 +20,12 @@ const GlobalAdminDashboard: React.FC = () => {
   const [meetingToDelete, setMeetingToDelete] = useState<Meeting | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
+  // Ensure sidebar is open on desktop, closed on mobile on initial load
+  useEffect(() => {
+    const isDesktop = window.innerWidth >= 1024; // lg breakpoint
+    setSidebarOpen(isDesktop);
+  }, []);
+
   useEffect(() => {
     fetchMeetings();
   }, []);

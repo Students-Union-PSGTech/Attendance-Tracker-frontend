@@ -4,12 +4,13 @@ import { useAuth } from '../contexts/AuthContext';
 import { verticalLeadAPI, globalAdminOperationsAPI } from '../api';
 import type { Meeting, Member, AttendanceData } from '../types';
 import ThemeToggle from '../components/ThemeToggle';
+import BackButton from '../components/BackButton';
 
 const MeetingAttendancePage: React.FC = () => {
   const { meetingId } = useParams<{ meetingId: string }>();
   const navigate = useNavigate();
   const { user, logout } = useAuth();
-  
+
   const [meeting, setMeeting] = useState<Meeting | null>(null);
   const [members, setMembers] = useState<Member[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -22,7 +23,7 @@ const MeetingAttendancePage: React.FC = () => {
 
   // Check for unsaved changes
   const checkForChanges = useCallback(() => {
-    const hasChanges = Object.keys(attendance).some(rollNo => 
+    const hasChanges = Object.keys(attendance).some(rollNo =>
       attendance[rollNo] !== originalAttendance[rollNo]
     );
     setHasUnsavedChanges(hasChanges);
@@ -61,27 +62,27 @@ const MeetingAttendancePage: React.FC = () => {
 
   const fetchMeetingData = async () => {
     if (!meetingId) return;
-    
+
     try {
       setLoading(true);
       setError('');
 
-  // Choose API based on user role: vertical_head uses verticalLeadAPI, global_admin uses globalAdminOperationsAPI
-  const apiToUse = user?.role === 'global_admin' ? globalAdminOperationsAPI : verticalLeadAPI;
+      // Choose API based on user role: vertical_head uses verticalLeadAPI, global_admin uses globalAdminOperationsAPI
+      const apiToUse = user?.role === 'global_admin' ? globalAdminOperationsAPI : verticalLeadAPI;
 
-  // Fetch meeting details and members attendance (combined in one API call based on backend)
-  const response = await apiToUse.getMembersAttendance(meetingId);
+      // Fetch meeting details and members attendance (combined in one API call based on backend)
+      const response = await apiToUse.getMembersAttendance(meetingId);
 
       if (response.message && response.meeting && response.members) {
         setMeeting(response.meeting);
         setMembers(response.members);
-        
+
         // Initialize attendance state from members' is_attended field
         const initialAttendance: AttendanceData = {};
         response.members.forEach((member: Member & { is_attended: boolean | null }) => {
           initialAttendance[member.roll_no] = member.is_attended || false;
         });
-        
+
         setAttendance(initialAttendance);
         setOriginalAttendance({ ...initialAttendance });
       } else {
@@ -98,7 +99,7 @@ const MeetingAttendancePage: React.FC = () => {
   const handleAttendanceChange = (rollNo: string, isPresent: boolean) => {
     // Allow global admin to edit attendance only for meetings they created (OB meetings)
     if (user?.role === 'global_admin' && meeting?.created_by !== 'OB') return;
-    
+
     setAttendance(prev => ({
       ...prev,
       [rollNo]: isPresent
@@ -112,9 +113,9 @@ const MeetingAttendancePage: React.FC = () => {
       setSaving(true);
       setError('');
 
-  const apiToUse = user?.role === 'global_admin' ? globalAdminOperationsAPI : verticalLeadAPI;
-  const response = await apiToUse.updateAttendance(meetingId, attendance);
-      
+      const apiToUse = user?.role === 'global_admin' ? globalAdminOperationsAPI : verticalLeadAPI;
+      const response = await apiToUse.updateAttendance(meetingId, attendance);
+
       if (response.message && (response.modified !== undefined || response.upserted !== undefined)) {
         setOriginalAttendance({ ...attendance });
         setHasUnsavedChanges(false);
@@ -158,7 +159,7 @@ const MeetingAttendancePage: React.FC = () => {
         return;
       }
     }
-    
+
     try {
       await logout();
       navigate('/login');
@@ -215,26 +216,19 @@ const MeetingAttendancePage: React.FC = () => {
   });
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-slate-950 transition-colors duration-500">
+    <div className="min-h-screen bg-gray-50 dark:bg-slate-950 transition-colors duration-500 relative">
+      {/* Back Button - Top Left Corner */}
+      <BackButton onClick={handleBack} className="absolute top-4 left-4 z-10" label="Back to Dashboard" />
+
       {/* Header */}
       <header className="bg-white/70 dark:bg-slate-900/80 backdrop-blur-sm shadow-sm border-b border-gray-200 dark:border-slate-800 transition-colors">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col gap-4 py-4 sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex items-center space-x-4">
-              <button
-                onClick={handleBack}
-                className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 transition-colors p-2 -ml-2 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-800/70"
-              >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                </svg>
-              </button>
-              <div>
-                <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-gray-100">Meeting Attendance</h1>
-                <p className="text-sm text-gray-600 dark:text-gray-300">
-                  Welcome back, {user?.name || user?.roll_no}
-                </p>
-              </div>
+            <div className="pl-12">
+              <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-gray-100">Meeting Attendance</h1>
+              <p className="text-sm text-gray-600 dark:text-gray-300">
+                Welcome back, {user?.name || user?.roll_no}
+              </p>
             </div>
             <div className="flex w-full flex-col items-center gap-2 sm:w-auto sm:flex-row sm:items-center sm:justify-end">
               <ThemeToggle className="mx-auto sm:mx-0" />
@@ -291,17 +285,17 @@ const MeetingAttendancePage: React.FC = () => {
           <div className="px-6 py-4 border-b border-gray-200 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             <div>
               <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">
-                {user?.role === 'global_admin' 
+                {user?.role === 'global_admin'
                   ? (meeting?.created_by === 'OB' ? 'Manage Attendance' : 'View Attendance')
                   : 'Mark Attendance'
                 }
               </h3>
               <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">
-                {user?.role === 'global_admin' 
-                  ? (meeting?.created_by === 'OB' 
-                      ? 'Check the boxes to mark members as present or absent'
-                      : 'Attendance records for this meeting (read-only)'
-                    )
+                {user?.role === 'global_admin'
+                  ? (meeting?.created_by === 'OB'
+                    ? 'Check the boxes to mark members as present or absent'
+                    : 'Attendance records for this meeting (read-only)'
+                  )
                   : 'Check the boxes to mark members as present'
                 }
               </p>
@@ -339,8 +333,8 @@ const MeetingAttendancePage: React.FC = () => {
                           className="h-5 w-5 sm:h-4 sm:w-4 text-primary-600 border-gray-300 dark:border-slate-700 rounded focus:ring-primary-500 focus:ring-offset-0"
                         />
                         <div className="ml-4">
-                          <label 
-                            htmlFor={`attendance-${member.roll_no}`} 
+                          <label
+                            htmlFor={`attendance-${member.roll_no}`}
                             className="text-sm font-medium text-gray-900 dark:text-gray-100 cursor-pointer select-none"
                           >
                             {member.name}
@@ -362,11 +356,10 @@ const MeetingAttendancePage: React.FC = () => {
                     )}
                   </div>
                   <div className="flex items-center">
-                    <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
-                      attendance[member.roll_no]
-                        ? 'bg-green-100 text-green-800 dark:bg-emerald-600/30 dark:text-emerald-200'
-                        : 'bg-gray-100 text-gray-800 dark:bg-slate-700/60 dark:text-gray-200'
-                    }`}>
+                    <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${attendance[member.roll_no]
+                      ? 'bg-green-100 text-green-800 dark:bg-emerald-600/30 dark:text-emerald-200'
+                      : 'bg-gray-100 text-gray-800 dark:bg-slate-700/60 dark:text-gray-200'
+                      }`}>
                       {attendance[member.roll_no] ? 'Present' : 'Absent'}
                     </span>
                   </div>

@@ -5,6 +5,7 @@ import AddMembers from '../components/AddMembers';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import ThemeToggle from '../components/ThemeToggle';
+import BackButton from '../components/BackButton';
 
 
 const AddMembersPage: React.FC = () => {
@@ -21,7 +22,7 @@ const AddMembersPage: React.FC = () => {
   };
 
   const handleDownloadTemplate = () => {
-  const headers = ['Name', 'Roll No', 'Year', 'Department', 'Role'];
+    const headers = ['Name', 'Roll No', 'Year', 'Department', 'Role'];
 
     const worksheet = XLSX.utils.aoa_to_sheet([headers]);
     worksheet['!cols'] = headers.map(() => ({ wch: 24 }));
@@ -45,26 +46,19 @@ const AddMembersPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-slate-950 transition-colors duration-500">
+    <div className="min-h-screen bg-gray-50 dark:bg-slate-950 transition-colors duration-500 relative">
+      {/* Back Button - Top Left Corner */}
+      <BackButton onClick={() => navigate('/dashboard')} className="absolute top-4 left-4 z-10" label="Back to Dashboard" />
+
       {/* Header */}
       <header className="bg-white/70 dark:bg-slate-900/80 backdrop-blur-sm shadow-sm border-b border-gray-200 dark:border-slate-800 transition-colors">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col gap-4 py-4 sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex items-center space-x-4">
-              <button
-                onClick={() => navigate('/dashboard')}
-                className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 transition-colors p-2 -ml-2 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-800/70"
-              >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                </svg>
-              </button>
-              <div>
-                <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-gray-100">Add Members</h1>
-                <p className="text-sm text-gray-600 dark:text-gray-300">
-                  Welcome back, {user?.name || user?.roll_no}
-                </p>
-              </div>
+            <div className="pl-12">
+              <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-gray-100">Add Members</h1>
+              <p className="text-sm text-gray-600 dark:text-gray-300">
+                Welcome back, {user?.name || user?.roll_no}
+              </p>
             </div>
             <div className="flex w-full flex-col items-center gap-2 sm:w-auto sm:flex-row sm:items-center sm:justify-end">
               <ThemeToggle className="mx-auto sm:mx-0" />
@@ -80,7 +74,7 @@ const AddMembersPage: React.FC = () => {
       </header>
       <main className="flex flex-col items-center justify-center p-4">
         <div className="w-full max-w-5xl mx-auto">
-          <AddMembers onSuccess={() => {}} onDownloadTemplate={handleDownloadTemplate} />
+          <AddMembers onSuccess={() => { }} onDownloadTemplate={handleDownloadTemplate} />
         </div>
       </main>
     </div>

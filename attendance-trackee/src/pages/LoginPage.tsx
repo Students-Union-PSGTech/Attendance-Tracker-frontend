@@ -47,7 +47,7 @@ const LoginPage: React.FC = () => {
     try {
       const success = await login(formData);
       if (success === false) {
-  // Removed debug log
+        // Removed debug log
         setError('Invalid credentials. Please try again.');
       }
 
@@ -81,7 +81,7 @@ const LoginPage: React.FC = () => {
             Access your dashboard to manage meetings and attendance
           </p>
         </div>
-        
+
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="rounded-md shadow-sm -space-y-px">
             <div className="mb-4">
@@ -97,10 +97,10 @@ const LoginPage: React.FC = () => {
                 required
               >
                 <option value="vertical_head">Vertical Head</option>
-                <option value="global_admin">Global Admin</option>
+                <option value="global_admin">Office Bearers</option>
               </select>
             </div>
-            
+
             <div className="mb-4">
               <label htmlFor="identifier" className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
                 {formData.role === 'global_admin' ? 'Username' : 'Roll Number'}
@@ -117,7 +117,7 @@ const LoginPage: React.FC = () => {
                 placeholder={formData.role === 'global_admin' ? 'Enter your username' : 'Enter your roll number'}
               />
             </div>
-            
+
             <div className="mb-6">
               <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
                 Password

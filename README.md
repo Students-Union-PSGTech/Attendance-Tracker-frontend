@@ -52,7 +52,7 @@ A modern React + TypeScript web application for managing meeting attendance in o
 1. **Clone the repository**
    ```bash
    https://github.com/Students-Union-PSGTech/Attendance-Tracker-frontend
-   cd attendance-trackee
+   cd attendance-tracker
    ```
 
 2. **Install dependencies**
@@ -100,7 +100,7 @@ npm run type-check
 ## 🏗️ Project Structure
 
 ```
-attendance-trackee/
+attendance-tracker/
 ├── public/                 # Static assets
 ├── src/
 │   ├── api.ts             # API endpoints and axios configuration

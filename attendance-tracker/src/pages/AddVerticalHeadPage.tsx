@@ -386,6 +386,11 @@ const AddVerticalHeadPage: React.FC = () => {
                       <option value="Video Editing">Video Editing</option>
                     </select>
                   </div>
+                  {error && (
+                    <div className="bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-500/40 text-red-700 dark:text-red-200 px-3 py-2 rounded-md text-sm">
+                      {error}
+                    </div>
+                  )}
                   <div className="flex gap-3 pt-4">
                     <button
                       type="submit"

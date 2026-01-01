@@ -31,7 +31,7 @@ const VerticalHeadDeleteRequestPage: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!formData.rollNumber.trim()) {
       setMessage({ type: 'error', text: 'Please enter a roll number' });
       return;
@@ -46,19 +46,19 @@ const VerticalHeadDeleteRequestPage: React.FC = () => {
         formData.reason.trim() || undefined
       );
 
-      setMessage({ 
-        type: 'success', 
-        text: response.message || 'Delete request submitted successfully! The global admin will review your request.' 
+      setMessage({
+        type: 'success',
+        text: response.message || 'Delete request submitted successfully! The global admin will review your request.'
       });
-      
+
       // Reset form after successful submission
       setFormData({ rollNumber: '', reason: '' });
-      
+
     } catch (error: any) {
       console.error('Error submitting delete request:', error);
-      setMessage({ 
-        type: 'error', 
-        text: error.response?.data?.message || 'Failed to submit delete request. Please try again.' 
+      setMessage({
+        type: 'error',
+        text: error.response?.data?.message || 'Failed to submit delete request. Please try again.'
       });
     } finally {
       setIsLoading(false);
@@ -119,11 +119,10 @@ const VerticalHeadDeleteRequestPage: React.FC = () => {
             </div>
 
             {message && (
-              <div className={`text-sm p-3 rounded-md border ${
-                message.type === 'success' 
-                  ? 'text-red-600 dark:text-red-300 bg-red-50 dark:bg-red-900/30 border-red-200 dark:border-red-500/40'
+              <div className={`text-sm p-3 rounded-md border ${message.type === 'success'
+                  ? 'text-green-600 dark:text-green-300 bg-green-50 dark:bg-green-900/30 border-green-200 dark:border-green-500/40'
                   : 'text-red-600 dark:text-red-300 bg-red-50 dark:bg-red-900/30 border-red-200 dark:border-red-500/40'
-              }`}>
+                }`}>
                 {message.text}
               </div>
             )}

@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { globalAdminOperationsAPI } from '../api';
+import { globalAdminAPI, globalAdminOperationsAPI } from '../api';
 import MeetingForm from '../components/MeetingForm';
 import ConfirmationModal from '../components/ConfirmationModal';
 import ThemeToggle from '../components/ThemeToggle';
+import MemberCountCard from '../components/MemberCountCard';
 import type { Meeting } from '../types';
 
 const GlobalAdminDashboard: React.FC = () => {
@@ -19,6 +20,8 @@ const GlobalAdminDashboard: React.FC = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [meetingToDelete, setMeetingToDelete] = useState<Meeting | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [memberCounts, setMemberCounts] = useState<{ vertical: string; count: number }[]>([]);
+  const [memberCountsLoading, setMemberCountsLoading] = useState(true);
 
   // Ensure sidebar is open on desktop, closed on mobile on initial load
   useEffect(() => {
@@ -28,7 +31,39 @@ const GlobalAdminDashboard: React.FC = () => {
 
   useEffect(() => {
     fetchMeetings();
+    fetchMemberCounts();
   }, []);
+
+  const fetchMemberCounts = async () => {
+    try {
+      setMemberCountsLoading(true);
+      const data = await globalAdminAPI.getAllVerticalsAttendanceSummary();
+      const attendanceSummary = data.attendance_summary || [];
+
+      // Count members per vertical
+      const countsByVertical: { [key: string]: number } = {};
+      attendanceSummary.forEach((member: any) => {
+        if (member.vertical) {
+          countsByVertical[member.vertical] = (countsByVertical[member.vertical] || 0) + 1;
+        }
+      });
+
+      // Convert to array format
+      const countsArray = Object.entries(countsByVertical).map(([vertical, count]) => ({
+        vertical,
+        count
+      }));
+
+      // Sort by vertical name
+      countsArray.sort((a, b) => a.vertical.localeCompare(b.vertical));
+
+      setMemberCounts(countsArray);
+    } catch (err) {
+      console.error('Error fetching member counts:', err);
+    } finally {
+      setMemberCountsLoading(false);
+    }
+  };
 
   const fetchMeetings = async () => {
     try {
@@ -396,6 +431,14 @@ const GlobalAdminDashboard: React.FC = () => {
 
           {/* Main Content */}
           <main className="px-4 sm:px-6 lg:px-8 py-8">
+            {/* Member Statistics */}
+            <MemberCountCard
+              data={memberCounts}
+              loading={memberCountsLoading}
+              title="Members by Vertical"
+              showTotal={true}
+            />
+
             {/* Page Title */}
             <div className="mb-8">
               <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Meetings Created by You</h2>

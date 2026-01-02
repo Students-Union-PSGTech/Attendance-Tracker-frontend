@@ -5,6 +5,7 @@ import { verticalLeadAPI } from '../api';
 import MeetingForm from '../components/MeetingForm';
 import ConfirmationModal from '../components/ConfirmationModal';
 import Sidebar from '../components/Sidebar';
+import { SingleVerticalCard } from '../components/MemberCountCard';
 import type { MenuItem } from '../components/Sidebar';
 import type { Meeting } from '../types';
 
@@ -20,10 +21,26 @@ const VerticalHeadDashboard: React.FC = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [meetingToDelete, setMeetingToDelete] = useState<Meeting | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [memberCount, setMemberCount] = useState<number>(0);
+  const [memberCountLoading, setMemberCountLoading] = useState(true);
 
   useEffect(() => {
     fetchMeetings();
+    fetchMemberCount();
   }, []);
+
+  const fetchMemberCount = async () => {
+    try {
+      setMemberCountLoading(true);
+      const response = await verticalLeadAPI.getMembers();
+      // The response contains { message, count, members }
+      setMemberCount(response.count || (response.members?.length || 0));
+    } catch (err) {
+      console.error('Error fetching member count:', err);
+    } finally {
+      setMemberCountLoading(false);
+    }
+  };
 
   const fetchMeetings = async () => {
     try {
@@ -221,6 +238,13 @@ const VerticalHeadDashboard: React.FC = () => {
 
           {/* Main Content */}
           <main className="px-4 sm:px-6 lg:px-8 py-8">
+            {/* Member Count Card */}
+            <SingleVerticalCard
+              vertical={user?.vertical || 'Your Vertical'}
+              count={memberCount}
+              loading={memberCountLoading}
+            />
+
             {/* Page Title */}
             <div className="mb-8">
               <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">Past Meetings</h2>
